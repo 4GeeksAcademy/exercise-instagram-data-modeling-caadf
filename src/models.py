@@ -34,7 +34,10 @@ class User(Base):
     username = Column(String (200), nullable=False)
     first_name = Column(String(200), nullable=False)
     last_name = Column(String(200), nullable=False)
-    email = Column(String(200), nullable=False)
+    email = Column(String(200), unique=True, nullable=False)
+    comment = relationship('Comment')
+    post = relationship('Post')
+
 
 class Comment(Base):
     __tablename__ = 'comments'
@@ -42,11 +45,15 @@ class Comment(Base):
     comment_text = Column(String(200), nullable=False)
     author_id = Column(Integer, ForeignKey('user.id'))
     post_id = Column(Integer, ForeignKey('post.id'))
+    user = relationship('User')
+    post = relationship('Post')
 
 class Post(Base):
     __tablename__ = 'posts'
     id= Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
+    comments = relationship("Comment")
+    media = relationship('Media')
     
 class Media(Base):
     __tablename__ = 'medias'
@@ -54,11 +61,13 @@ class Media(Base):
     type = Column(String (200), nullable=False)
     url = Column(String(200), nullable=False)
     post_id= Column(Integer,  ForeignKey('post.id'))
+    post = relationship('Post')
 
 class Follower(Base):
     __tablename__ = 'followers'
     user_from_id= Column(Integer, ForeignKey('user.id'), primary_key=True)
     user_to_id= Column(Integer, ForeignKey('user.id'), primary_key=True)
+    user = relationship('User')
 
 ## Draw from SQLAlchemy base
 try:
