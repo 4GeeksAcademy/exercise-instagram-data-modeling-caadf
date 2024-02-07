@@ -43,15 +43,15 @@ class Comment(Base):
     __tablename__ = 'comments'
     id = Column(Integer, primary_key=True)
     comment_text = Column(String(200), nullable=False)
-    author_id = Column(Integer, ForeignKey('user.id'))
-    post_id = Column(Integer, ForeignKey('post.id'))
+    author_id = Column(Integer, ForeignKey('users.id'))
+    post_id = Column(Integer, ForeignKey('posts.id'))
     user = relationship('User')
     post = relationship('Post')
 
 class Post(Base):
     __tablename__ = 'posts'
     id= Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
     comments = relationship("Comment")
     media = relationship('Media')
     
@@ -60,13 +60,13 @@ class Media(Base):
     id = Column(Integer, primary_key=True)
     type = Column(String (200), nullable=False)
     url = Column(String(200), nullable=False)
-    post_id= Column(Integer,  ForeignKey('post.id'))
+    post_id= Column(Integer,  ForeignKey('posts.id'))
     post = relationship('Post')
 
 class Follower(Base):
     __tablename__ = 'followers'
-    user_from_id= Column(Integer, ForeignKey('user.id'), primary_key=True)
-    user_to_id= Column(Integer, ForeignKey('user.id'), primary_key=True)
+    user_from_id= Column(Integer, ForeignKey('users.id'), primary_key=True)
+    user_to_id= Column(Integer, ForeignKey('users.id'), primary_key=True)
     user = relationship('User')
 
 ## Draw from SQLAlchemy base
